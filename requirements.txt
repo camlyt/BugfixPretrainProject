@@ -1,0 +1,10 @@
+datasets
+sentencepiece
+transformers
+torch
+accelerate
+tqdm
+numpy
+pandas
+scikit-learn
+faiss-cpu
