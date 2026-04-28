@@ -4,7 +4,7 @@ from typing import Dict, List
 import sentencepiece as spm
 import torch
 from torch.utils.data import Dataset
-from transformers import T5Config, T5ForConditionalGeneration, Trainer, TrainingArguments
+from transformers import T5Config, T5ForConditionalGeneration, Trainer, TrainingArguments, EarlyStoppingCallback
 
 from config import (
     TOKENIZER_MODEL_PATH,
@@ -165,7 +165,9 @@ def main() -> None:
         fp16=torch.cuda.is_available(),
 
         remove_unused_columns=False,
-        load_best_model_at_end=False,
+        load_best_model_at_end=True,
+        metric_for_best_model="eval_loss",
+        greater_is_better=False,
     )
 
     trainer = Trainer(
@@ -174,6 +176,7 @@ def main() -> None:
         train_dataset=train_dataset,
         eval_dataset=valid_dataset,
         data_collator=data_collator,
+        callbacks=[EarlyStoppingCallback(early_stopping_patience=2)],
     )
 
     print("Starting fine-tuning WITHOUT pretraining...")
