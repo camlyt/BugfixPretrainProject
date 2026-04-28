@@ -104,7 +104,7 @@ def evaluate_model(
                     input_ids=input_tensor,
                     attention_mask=attention_mask,
                     max_length=MAX_GENERATION_LENGTH,
-                    num_beams=4,
+                    num_beams=2,
                     early_stopping=True,
                 )
 
