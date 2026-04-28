@@ -58,7 +58,7 @@ def main() -> None:
     dataset = load_dataset("code_search_net", "java")
 
     print("Shuffling and sampling training split...")
-    train_split = dataset["train"].shuffle(seed=SEED)
+    train_split = dataset["train"].shuffle(seed=42).select(range(50000))
     sampled = train_split.select(range(PRETRAIN_SAMPLE_SIZE))
 
     print("Converting sampled records to a Python list...")
