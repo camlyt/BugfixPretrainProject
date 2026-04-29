@@ -23,8 +23,6 @@ WITH_PT_MODEL_DIR = FINETUNE_WITH_PT_DIR / "final"
 NO_PT_MODEL_DIR = FINETUNE_NO_PT_DIR / "final"
 
 MAX_INPUT_LENGTH = 512
-MAX_GENERATION_LENGTH = 512
-
 
 class SimpleTokenizerWrapper:
     """Small wrapper around SentencePiece for encode/decode."""
@@ -103,9 +101,13 @@ def evaluate_model(
                 generated = model.generate(
                     input_ids=input_tensor,
                     attention_mask=attention_mask,
-                    max_length=MAX_GENERATION_LENGTH,
+                    max_new_tokens=128,
                     num_beams=2,
+                    no_repeat_ngram_size=3,
+                    repetition_penalty=1.2,
                     early_stopping=True,
+                    pad_token_id=tokenizer.pad_id,
+                    eos_token_id=tokenizer.eos_id,
                 )
 
             prediction = tokenizer.decode(generated[0].tolist())
