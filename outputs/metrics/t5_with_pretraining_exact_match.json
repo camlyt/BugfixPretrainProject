@@ -1,0 +1,6 @@
+{
+  "model": "t5_with_pretraining",
+  "num_examples": 6545,
+  "exact_matches": 0,
+  "exact_match_accuracy": 0.0
+}

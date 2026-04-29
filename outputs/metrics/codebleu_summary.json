@@ -1,0 +1,26 @@
+[
+  {
+    "model": "t5_with_pretraining",
+    "num_examples": 6545,
+    "codebleu": 0.1322014774421102,
+    "details": {
+      "codebleu": 0.1322014774421102,
+      "ngram_match_score": 0.11268984434043704,
+      "weighted_ngram_match_score": 0.120522845920054,
+      "syntax_match_score": 0.13713035249585995,
+      "dataflow_match_score": 0.1584628670120898
+    }
+  },
+  {
+    "model": "t5_no_pretraining",
+    "num_examples": 6545,
+    "codebleu": 0.18900954410530899,
+    "details": {
+      "codebleu": 0.18900954410530899,
+      "ngram_match_score": 0.17746117252469387,
+      "weighted_ngram_match_score": 0.1932298700381423,
+      "syntax_match_score": 0.25249980285466445,
+      "dataflow_match_score": 0.13284733100373539
+    }
+  }
+]

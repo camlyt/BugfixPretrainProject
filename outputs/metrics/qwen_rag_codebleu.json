@@ -1,0 +1,12 @@
+{
+  "model": "qwen_rag",
+  "num_examples": 200,
+  "codebleu": 0.7031080787029965,
+  "details": {
+    "codebleu": 0.7031080787029965,
+    "ngram_match_score": 0.5042935079226042,
+    "weighted_ngram_match_score": 0.7452366889968415,
+    "syntax_match_score": 0.7728221178925404,
+    "dataflow_match_score": 0.79008
+  }
+}

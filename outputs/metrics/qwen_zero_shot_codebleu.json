@@ -1,0 +1,12 @@
+{
+  "model": "qwen_zero_shot",
+  "num_examples": 200,
+  "codebleu": 0.39787703276233133,
+  "details": {
+    "codebleu": 0.39787703276233133,
+    "ngram_match_score": 0.0587378844477698,
+    "weighted_ngram_match_score": 0.11468891118162867,
+    "syntax_match_score": 0.652321335419927,
+    "dataflow_match_score": 0.76576
+  }
+}
