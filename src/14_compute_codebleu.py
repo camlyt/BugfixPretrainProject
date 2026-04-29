@@ -1,13 +1,9 @@
 import json
 import os
-import sys
-
-from config import PREDICTIONS_DIR, METRICS_DIR
-
-# Add CodeBLEU to path
-sys.path.append("/content/CodeBLEU")
 
 from codebleu import calc_codebleu
+
+from config import PREDICTIONS_DIR, METRICS_DIR
 
 
 PRED_FILES = {
@@ -20,50 +16,52 @@ LANG = "java"
 
 
 def load_predictions(path):
-    refs = []
-    preds = []
+    """Load reference and prediction strings from a JSONL file."""
+    references = []
+    predictions = []
 
-    with open(path, "r", encoding="utf-8") as f:
-        for line in f:
+    with open(path, "r", encoding="utf-8") as file:
+        for line in file:
             item = json.loads(line)
-            refs.append(item["reference"])
-            preds.append(item["prediction"])
+            references.append(item["reference"])
+            predictions.append(item["prediction"])
 
-    return refs, preds
+    return references, predictions
 
 
 def evaluate(model_name, path):
+    """Compute CodeBLEU for one model."""
     print(f"\nEvaluating {model_name}...")
+    print(f"Prediction file: {path}")
 
-    refs, preds = load_predictions(path)
-
-    # CodeBLEU expects list of lists for references
-    refs = [[r] for r in refs]
+    references, predictions = load_predictions(path)
 
     result = calc_codebleu(
-        preds,
-        refs,
-        lang="java"
+        references,
+        predictions,
+        lang=LANG,
     )
-
-    score = result["codebleu"]
 
     output = {
         "model": model_name,
-        "codebleu": score,
-        "details": result
+        "num_examples": len(predictions),
+        "codebleu": result["codebleu"],
+        "details": result,
     }
 
     output_path = METRICS_DIR / f"{model_name}_codebleu.json"
 
-    with open(output_path, "w") as f:
-        json.dump(result, f, indent=2)
+    with open(output_path, "w", encoding="utf-8") as file:
+        json.dump(output, file, indent=2)
 
-    print(f"{model_name} CodeBLEU: {score:.4f}")
-    return result
+    print(f"{model_name} CodeBLEU: {result['codebleu']:.4f}")
+    print(f"Saved to: {output_path}")
+
+    return output
 
 
 def main():
+    """Compute CodeBLEU for both T5 models."""
     os.makedirs(METRICS_DIR, exist_ok=True)
 
     results = []
@@ -73,8 +71,8 @@ def main():
 
     summary_path = METRICS_DIR / "codebleu_summary.json"
 
-    with open(summary_path, "w") as f:
-        json.dump(results, f, indent=2)
+    with open(summary_path, "w", encoding="utf-8") as file:
+        json.dump(results, file, indent=2)
 
     print(f"\nSaved summary to {summary_path}")
 
