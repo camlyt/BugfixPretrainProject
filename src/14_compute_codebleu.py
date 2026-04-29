@@ -7,7 +7,7 @@ from config import PREDICTIONS_DIR, METRICS_DIR
 # Add CodeBLEU to path
 sys.path.append("/content/CodeBLEU")
 
-from calc_code_bleu import calc_code_bleu
+from codebleu import calc_codebleu
 
 
 PRED_FILES = {
@@ -40,15 +40,18 @@ def evaluate(model_name, path):
     # CodeBLEU expects list of lists for references
     refs = [[r] for r in refs]
 
-    score = calc_code_bleu(
-        refs,
+    result = calc_codebleu(
         preds,
-        lang=LANG,
+        refs,
+        lang="java"
     )
 
-    result = {
+    score = result["codebleu"]
+
+    output = {
         "model": model_name,
         "codebleu": score,
+        "details": result
     }
 
     output_path = METRICS_DIR / f"{model_name}_codebleu.json"
